@@ -1,0 +1,103 @@
+set heading off
+set feedback off
+set echo off
+set verify off
+
+drop table storage;
+drop table orders;
+drop table warehouse;
+drop table products;
+drop table customer;
+drop table counter;
+
+create table customer (
+ cid number(5,0) primary key,
+ lname varchar2(30),
+ fname varchar2(30),
+ caddress char(50),
+ ccity varchar2(30),
+ cstate char(2),
+ czip char(5),
+ cphone char(10));
+ 
+ create table products (
+  pid char(2) primary key,
+  pdesc varchar2(30),
+  unitprice number(8,2));
+ 
+ create table warehouse (
+  wcode char(2) primary key,
+  waddress char(50),
+  wcity varchar(30),
+  wstate char(2),
+  wzip char(5),
+  wphone char(10));
+  
+ create table orders (
+  ordnum number(4,0) primary key,
+  orddate date,
+  cid number(9,0),
+  pid char(2),
+  wcode char(2),
+  ordqty number(10,0),
+  unitprice number(8,2),
+  ordtotal number (10,2),
+  status char(10),
+  shipqty number(10,0),
+  shiptotal number (10,2),
+  shipdate date,
+  constraint cid_fk foreign key (cid) references customer (cid),
+  constraint pid_fk foreign key (pid) references products (pid),
+  constraint wcode_fk foreign key (wcode) references warehouse (wcode));
+  
+ create table storage (
+  pid char(2),
+  wcode char(2),
+  unitsinstock number(8,0),
+  primary key (pid, wcode),
+  constraint pid_fk2 foreign key (pid) references products (pid),
+  constraint wcode_fk2 foreign key (wcode) references warehouse (wcode));
+  
+create table counter (
+  maxnum number (4,0));
+  insert into counter values (1001);
+ 
+insert into customer values (101, 'Seaton', 'Jon', '4586 Valley Mill Rd', 'El Cajon', 'CA', '92020', '6195555555');
+insert into customer values (102, 'Smith', 'Stan', '4694 Lake Wind Dr', 'San Diego', 'CA', '92015', '6196665555');
+insert into customer values (103, 'Johnson', 'Leslie', '8576 Windmill View Rd.', 'Seattle', 'WA', '60020', '6197775555');
+insert into customer values (104, 'Lee', 'Ben', '7896 Atherton Rd', 'Portland', 'OR', '98953', '6198885555');
+insert into customer values (105, 'Lopez', 'Eric', '1234 Azul Rd', 'Las Vegas', 'NV', '78953', '6199995555');
+
+insert into products values ('p1','Pencil',2.00);
+insert into products values ('p2','Pen',3.00);
+insert into products values ('p3','Sissors',5.00);
+insert into products values ('p4','Lined Paper',1.00);
+insert into products values ('p5','Ink Cartrage',7.00);
+
+insert into warehouse values ('w1','1234 Pretty Rd.','Pheonix','AZ','95415','7899874561');
+insert into warehouse values ('w2','4567 Yellow Ln.','Baltimore','MD','12365','6549874123');
+insert into warehouse values ('w3','9876 Turtle St.','Boise','ID','56478','3216549321');
+insert into warehouse values ('w4','6963 Friendship Ave.','New York','NY','10123','1212326541');
+insert into warehouse values ('w5','852 Boulder St.','Denver','CO','75453','3287219512');
+
+insert into storage values ('p1','w1',2500);
+insert into storage values ('p2','w1',4100);
+insert into storage values ('p3','w1',1000);
+insert into storage values ('p4','w1',2300);
+insert into storage values ('p5','w1',2000);
+insert into storage values ('p1','w2',1500);
+insert into storage values ('p3','w2',3200);
+insert into storage values ('p4','w2',5000); 
+insert into storage values ('p5','w2',3500);
+insert into storage values ('p1','w3',5000);
+insert into storage values ('p2','w3',3000);
+insert into storage values ('p3','w3',2000);
+insert into storage values ('p4','w3',2500);
+insert into storage values ('p1','w4',1800);
+insert into storage values ('p2','w4',4400);
+insert into storage values ('p3','w4',5300);
+insert into storage values ('p4','w4',2800);
+insert into storage values ('p5','w4',2400);
+insert into storage values ('p1','w5',3600);
+insert into storage values ('p4','w5',4500);
+insert into storage values ('p5','w5',1700);
